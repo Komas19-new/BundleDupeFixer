@@ -1,0 +1,10 @@
+name: BundleDupeFixer
+version: '1.0.0'
+main: party.komas19.bundleDupeFixer.BundleDupeFixer
+api-version: '1.21'
+author: Komas19
+description: Fixes the universal bundle dupe by rate-limiting bundle actions.
+permissions:
+  bundledupefixer.alert:
+    description: Receive alerts when a player triggers bundle rate-limit
+    default: op

@@ -1,0 +1,2 @@
+# Max bundle actions allowed per second (drop, use, move, drag)
+max-actions-per-second: 5
