@@ -22,11 +22,13 @@ public final class BundleDupeFixer extends JavaPlugin implements Listener {
     private final Map<UUID, Integer> useCount = new HashMap<>();
 
     private int maxActions;
+    private MessageManager messageManager;
 
     @Override
     public void onEnable() {
         saveDefaultConfig();
         maxActions = getConfig().getInt("max-actions-per-second", 5);
+        messageManager = new MessageManager(this);
         Bukkit.getPluginManager().registerEvents(this, this);
         getLogger().info("BundleDupeFixer enabled with limit: " + maxActions + " actions/sec");
     }
@@ -52,10 +54,15 @@ public final class BundleDupeFixer extends JavaPlugin implements Listener {
         useCount.put(uuid, count);
 
         if (count > maxActions) {
-            String msg = "§c[BundleDupeFixer] " + player.getName() + " triggered bundle rate-limit (" + action + ") THIS IS POSSIBLY A DUPE ATTEMPT - PLEASE INVESTIGATE";
+            Map<String, String> placeholders = Map.of(
+                    "player", player.getName(),
+                    "action", action
+            );
+
+            String msg = messageManager.getMessage("alerts.rate-limit", placeholders);
             getLogger().warning(player.getName() + " triggered bundle rate-limit (" + action + ")");
             for (Player online : Bukkit.getOnlinePlayers()) {
-                if (online.hasPermission(getConfig().getString("alert-permission", "bundledupefixer.alert"))) {
+                if (online.hasPermission("bundledupefixer.alert")) {
                     online.sendMessage(msg);
                 }
             }
@@ -68,7 +75,7 @@ public final class BundleDupeFixer extends JavaPlugin implements Listener {
     public void onInteract(PlayerInteractEvent e) {
         if (isBundle(e.getItem()) && rateLimit(e.getPlayer(), "interact")) {
             e.setCancelled(true);
-            e.getPlayer().sendMessage("§cYou are using bundles too fast!");
+            e.getPlayer().sendMessage(messageManager.getMessage("player-messages.interact", Map.of()));
         }
     }
 
@@ -76,7 +83,7 @@ public final class BundleDupeFixer extends JavaPlugin implements Listener {
     public void onDrop(PlayerDropItemEvent e) {
         if (isBundle(e.getItemDrop().getItemStack()) && rateLimit(e.getPlayer(), "drop")) {
             e.setCancelled(true);
-            e.getPlayer().sendMessage("§cYou are dropping bundles too fast!");
+            e.getPlayer().sendMessage(messageManager.getMessage("player-messages.drop", Map.of()));
         }
     }
 
@@ -87,7 +94,7 @@ public final class BundleDupeFixer extends JavaPlugin implements Listener {
         if (isBundle(e.getCurrentItem()) || isBundle(e.getCursor())) {
             if (rateLimit(player, "inventory-click")) {
                 e.setCancelled(true);
-                player.sendMessage("§cYou are moving bundles too fast!");
+                player.sendMessage(messageManager.getMessage("player-messages.inventory-click", Map.of()));
             }
         }
     }
@@ -108,7 +115,7 @@ public final class BundleDupeFixer extends JavaPlugin implements Listener {
         }
         if (hasBundle && rateLimit(player, "inventory-drag")) {
             e.setCancelled(true);
-            player.sendMessage("§cYou are dragging bundles too fast!");
+            player.sendMessage(messageManager.getMessage("player-messages.inventory-drag", Map.of()));
         }
     }
 }

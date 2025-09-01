@@ -1,0 +1,34 @@
+# ==========================
+# BundleDupeFixer Messages
+# ==========================
+# Placeholders:
+#   {prefix} -> Will be replaced with the prefix value defined below
+#   {player} -> The name of the player who triggered the action
+#   {action} -> The type of action (e.g., interact, drop, inventory-click, inventory-drag)
+#
+# Color codes:
+#   Use & for Minecraft color codes (e.g., &c = red, &a = green)
+#
+# Notes:
+#   You can customize every message below to your liking.
+#   Make sure placeholders are kept if you want them to work.
+
+# Global prefix used for all messages
+prefix: "&c[BundleDupeFixer] "
+
+alerts:
+  # Sent to staff with permission when a player is suspected of duping
+  rate-limit: "{prefix}{player} triggered bundle rate-limit ({action}) THIS IS POSSIBLY A DUPE ATTEMPT - PLEASE INVESTIGATE"
+
+player-messages:
+  # Sent to the player when they are using bundles too fast
+  interact: "{prefix}&cYou are using bundles too fast!"
+
+  # Sent when the player tries to drop bundles too fast
+  drop: "{prefix}&cYou are dropping bundles too fast!"
+
+  # Sent when the player moves bundles in their inventory too fast
+  inventory-click: "{prefix}&cYou are moving bundles too fast!"
+
+  # Sent when the player drags bundles in their inventory too fast
+  inventory-drag: "{prefix}&cYou are dragging bundles too fast!"
