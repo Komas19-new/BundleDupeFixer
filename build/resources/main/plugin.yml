@@ -1,5 +1,5 @@
 name: BundleDupeFixer
-version: '1.0.1'
+version: '1.0.2'
 main: party.komas19.bundleDupeFixer.BundleDupeFixer
 api-version: '1.21'
 author: Komas19

@@ -34,7 +34,9 @@ public final class BundleDupeFixer extends JavaPlugin implements Listener {
     }
 
     private boolean isBundle(ItemStack item) {
-        return item != null && item.getType() == Material.BUNDLE;
+        if (item == null) return false;
+        Material type = item.getType();
+        return type.name().endsWith("_BUNDLE") || type == Material.BUNDLE;
     }
 
     private boolean rateLimit(Player player, String action) {
