@@ -1,3 +1,5 @@
+# You should just update at this point.
+
 MINECRAFT 1.21.4 ONLY
 JAVA 21+ ONLY
 
